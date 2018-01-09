@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>vip</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no minimal-ui">
+    <link rel="shortcut icon" href="https://static.pgyer.com/static-20171228/assets/img/favicon.ico">
+    <link rel="stylesheet" href="./assets/header_include.min.css">
+    <link rel="stylesheet" href="./assets/viewGreen.css">
+</head>
+
+<body cz-shortcut-listen="true">
+    <div class="row view-alert" style="display:none;z-index: 99; width: 100%; background: rgb(52, 52, 52); margin-left: 0px; margin-right: 0px; padding-top: 30px; padding-bottom: 30px; box-shadow: rgba(22, 22, 23, 0.62) 0px -10px 16px inset;">
+        <div class="col-md-12 text-left" style="padding-right:50px;padding-left:30px;">
+            <p style="color:#7f7e7e;margin:0px;">点击右上角按钮，然后在弹出的菜单中，点击在<span></span>中打开，即可安装</p>
+        </div>
+        <div class="col-md-12 pull-right">
+        <img src="assets/alert-arrow.png" class="pull-right" style="width:30px;margin-top:-68px;">
+        </div>
+    </div>
+    <div class="row-fluid  margin-bottom-20" style="z-index:-2;">
+        <div id="header"></div>
+    </div>
+    <div class="container content">
+        <div class="view row">
+            <div class="span12 margin-bottom-30" id="appicon-bg" style="text-align:center;">
+                <a href="javascript:void(0);" onclick="javascript:install();"><img id="appIcon" class="appicon"></a>
+            </div>
+            <div class="span12" style="text-align:center;padding-top:10px;">
+                <h2 id="hName" style="color:#333;size:24px;margin-bottom: -5px;">图享家</h2>
+            </div>
+            <div class="span12 gray-text" style="text-align:center;">
+                <ul class="breadcrumb" id="breadcrumb">
+                    
+                </ul>
+            </div>
+        </div>
+        <div id="" class="view row margin-bottom-30" style="padding-top:26px;">
+            <div class="span12 gray-text" style="text-align:center;">
+                <img id="appQrcode" style="width:156px; height:156px;">
+                <p style="padding-top:10px;color:#969b9d;">或者用手机扫描二维码安装</p>
+            </div>
+        </div>
+        <div id="" class="view row" style="margin-top:30px;">
+            <div class="span12 margin-bottom-20">
+                <div class="spinner">
+                    <div id="showtext">正在下载，请在浏览器中查看下载进度</div>
+                    <div class="loading"></div>
+                    <a href="javascript:void(0);" id="down_load" class="btn-u btn-u-lg"> <i class="fa fa-download"></i> 点击安装</a>
+                </div>
+            </div>
+            <div class="span12 margin-bottom-20" style="text-align:center;display:none;">
+                <div class="spinner">
+                    <div id="showtext">正在安装，请按 Home 键在桌面查看</div>
+                    <div class="loading"></div>
+                    <a href="javascript:void(0);" id="down_load" class="btn-u btn-u-lg btn-u-green"><i class="fa fa-download"></i> 点击安装</a>
+                </div>
+            </div>
+            <div class="span12 gray-text" style="text-align:center;margin-bottom:10px;">
+                <span class=""><i aria-hidden="true" class="fa fa-android" style="font-size:16px;"></i> 适用于Android设备</span>
+            </div>
+        </div>
+        <hr class="devider devider-dotted">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2" style="word-break:break-all;">
+                <div class="tag-box ">
+                    <h2 class="content-title">应用介绍</h2>
+                    <div id="appIntroduce"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="tag-box  margin-bottom-40">
+                    <h2 class="content-title">应用截图</h2>
+                    <div class="table-responsive" style="border:none; overflow:auto;">
+                        <table class="table" style="margin-bottom:0;">
+                            <tbody id="trDoms">
+                                <tr></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding-left:15px;padding-right:15px;">
+    </div>
+    <div id="reportAppModal"></div>
+    <div id="loginTelModalDiv"></div>
+    <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+    <script>
+        function isWeiXin(){ 
+        var ua = window.navigator.userAgent.toLowerCase(); 
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
+        return true; 
+        }else{ 
+        return false; 
+        } 
+        } 
+        var askBrowserAlert = '请在手机上使用浏览器打开本页面，或者扫描下面的二维码，即可安装';
+        $(document).ready(function() {
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            var dowVals ='';
+            if (isWeiXin()) {
+                //Safari
+                if(isAndroid){
+                    $('.view-alert span').html('浏览器')
+                }
+                if(isiOS){
+                    $('.view-alert span').html('Safari')
+                }
+                setTimeout(function() {
+                    $('.view-alert').slideDown(1000);
+                }, 500);
+            }
+            $('#down_load').click(function(){
+                install_loading();
+            })
+            function install_loading(){
+                if (isWeiXin()) {
+                    if(isAndroid){
+                        alert('点击右上角按钮，然后在弹出的菜单中，点击在浏览器中打开，即可安装')
+                    }
+                    if(isiOS){
+                        alert('点击右上角按钮，然后在弹出的菜单中，点击在Safari中打开，即可安装')
+                    }
+                }else{
+                    window.location.href=dowVals
+                }
+            }
+            var appDow ={
+                trDomFun:function(datas){
+                    //图片
+                    var trDom ='';
+                            for(var i=0; i<datas.length; i++){
+                                console.log(datas[i])
+                                trDom +='<td class="text-center" width="20%" style="border:none;">'+
+                                    '<div style="width:230px;">'+
+                                    '<img src="assets/detail_images/'+datas[i]+'" style="width:230px;" />'+
+                                    '</div>'+
+                                '</td>'
+                            }
+                        return trDom;
+                },
+                breaDcrumb:function(bdata){
+                    var bstr ='';
+                    bstr+='<li>版本：'+bdata.appEdition+'</li>'+
+                        '<li>大小：'+bdata.appSize+'</li>'+
+                        '<li>更新时间：'+bdata.appTimes+'</li>'
+                    return bstr;
+                }
+            }
+            $.ajax({
+                type: "GET",
+                url:'./assets/detail.json',
+                data: {},
+                dataType: "json",
+                success: function(res){
+                    console.log(res);
+                    var breadcrumb = {
+                        appSize:res.size,
+                        appEdition:res.version_name,
+                        appTimes:res.update_time
+                    }
+                    $('#trDoms tr').html(appDow.trDomFun(res.detail_images));
+                    $('#appIntroduce').html(res.detail);
+                    $('#breadcrumb').html(appDow.breaDcrumb(breadcrumb));
+                    $('#hName').html(res.name);
+                    $('#appIcon').attr('src',res.icon);
+                    $('#appQrcode').attr('src',res.qrcode);
+                    if(isAndroid){
+                        dowVals=res.version_dow.android
+                    }
+                    if(isiOS){
+                        dowVals=res.version_dow.android
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
