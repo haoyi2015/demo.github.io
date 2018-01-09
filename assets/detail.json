@@ -12,8 +12,6 @@
 		"img2.jpg",
 		"img3.jpg"
 	],
-	"version_dow":{
-		"android":"http://public-content-data1.oss-cn-hangzhou.aliyuncs.com/pb/xiaocao.apk",
-		"ios":""
-	}
+	"android_apk_download":"http://public-content-data1.oss-cn-hangzhou.aliyuncs.com/pb/xiaocao.apk",
+	"iOS_tips":"应用暂不支持IOS设备"
 }
